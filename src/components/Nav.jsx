@@ -19,6 +19,11 @@ function Nav() {
               Child Profile
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/attendance" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              Attendance
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

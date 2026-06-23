@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './ChildProfile.css'
+
+const CHILD_PROFILES_STORAGE_KEY = 'daycare.childProfiles'
 
 const INITIAL_FORM = {
   firstName: '',
@@ -17,6 +19,26 @@ function ChildProfile() {
   const [form, setForm] = useState(INITIAL_FORM)
   const [savedProfiles, setSavedProfiles] = useState([])
   const [submitted, setSubmitted] = useState(false)
+
+  useEffect(() => {
+    const saved = localStorage.getItem(CHILD_PROFILES_STORAGE_KEY)
+    if (!saved) {
+      return
+    }
+
+    try {
+      const parsed = JSON.parse(saved)
+      if (Array.isArray(parsed)) {
+        setSavedProfiles(parsed)
+      }
+    } catch {
+      localStorage.removeItem(CHILD_PROFILES_STORAGE_KEY)
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem(CHILD_PROFILES_STORAGE_KEY, JSON.stringify(savedProfiles))
+  }, [savedProfiles])
 
   function handleChange(e) {
     const { name, value } = e.target
