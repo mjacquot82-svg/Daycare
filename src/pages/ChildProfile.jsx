@@ -25,7 +25,7 @@ function ChildProfile() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    setSavedProfiles((prev) => [...prev, { ...form, id: Date.now() }])
+    setSavedProfiles((prev) => [...prev, { ...form, id: crypto.randomUUID() }])
     setForm(EMPTY_FORM)
     setSubmitted(true)
     setTimeout(() => setSubmitted(false), 4000)
@@ -48,7 +48,7 @@ function ChildProfile() {
           </div>
         )}
 
-        <form className="cp-form" onSubmit={handleSubmit} noValidate>
+        <form className="cp-form" onSubmit={handleSubmit}>
           <fieldset className="cp-fieldset">
             <legend className="cp-legend">Child information</legend>
             <div className="cp-row cp-row--2">
@@ -98,6 +98,7 @@ function ChildProfile() {
                   value={form.dateOfBirth}
                   onChange={handleChange}
                   required
+                  max={new Date().toISOString().split('T')[0]}
                 />
               </div>
             </div>
@@ -198,6 +199,8 @@ function ChildProfile() {
                   required
                   autoComplete="tel"
                   placeholder="e.g. (555) 867-5309"
+                  pattern="[\+]?[\d\s\-\(\)]{7,20}"
+                  title="Please enter a valid phone number"
                 />
               </div>
             </div>
