@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import './App.css'
+import Nav from './components/Nav'
+import ChildProfile from './pages/ChildProfile'
 
 const features = [
   {
@@ -22,8 +25,13 @@ const features = [
 ]
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('home')
+
   return (
-    <main className="page">
+    <>
+      <Nav currentPage={currentPage} onNavigate={setCurrentPage} />
+      {currentPage === 'home' && (
+        <main className="page">
       <section className="hero-section">
         <div className="hero-copy">
           <p className="eyebrow">Trusted childcare management</p>
@@ -86,7 +94,10 @@ function App() {
           </article>
         ))}
       </section>
-    </main>
+      </main>
+      )}
+      {currentPage === 'child-profile' && <ChildProfile />}
+    </>
   )
 }
 

@@ -1,0 +1,262 @@
+.cp-page {
+  padding: 3rem 0 5rem;
+}
+
+.cp-container {
+  width: min(680px, calc(100% - 3rem));
+  margin: 0 auto;
+}
+
+.cp-header {
+  margin-bottom: 2.5rem;
+}
+
+.cp-eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2563eb;
+}
+
+.cp-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+.cp-subtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.cp-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+  border-radius: 0.875rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.cp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.cp-fieldset {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+  margin: 0;
+}
+
+.cp-legend {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #2563eb;
+  padding: 0 0.5rem;
+}
+
+.cp-row {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cp-row:last-child {
+  margin-bottom: 0;
+}
+
+.cp-row--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cp-row--1 {
+  grid-template-columns: minmax(0, 0.5fr);
+}
+
+.cp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.cp-field:last-child {
+  margin-bottom: 0;
+}
+
+.cp-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.cp-required {
+  color: #dc2626;
+}
+
+.cp-input,
+.cp-textarea {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.625rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #0f172a;
+  background: #ffffff;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  outline: none;
+}
+
+.cp-input:focus,
+.cp-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.cp-input::placeholder,
+.cp-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.cp-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+.cp-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cp-required-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.cp-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 1.75rem;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.22);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cp-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(37, 99, 235, 0.28);
+}
+
+.cp-submit:active {
+  transform: translateY(0);
+}
+
+.cp-saved {
+  margin-top: 3rem;
+}
+
+.cp-saved-title {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cp-profile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.cp-profile-card {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.cp-profile-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.375rem;
+}
+
+.cp-profile-detail {
+  font-size: 0.875rem;
+  color: #475569;
+  margin-top: 0.25rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .cp-page {
+    padding: 2rem 0 4rem;
+  }
+
+  .cp-container {
+    width: min(680px, calc(100% - 2rem));
+  }
+
+  .cp-fieldset {
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .cp-row--2 {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-row--1 {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cp-submit {
+    width: 100%;
+  }
+}
