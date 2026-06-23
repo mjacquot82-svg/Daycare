@@ -1,8 +1,28 @@
 import { useEffect, useMemo, useState } from 'react'
 import './Attendance.css'
+import { ATTENDANCE_STORAGE_KEY, CHILD_PROFILES_STORAGE_KEY } from '../constants/storageKeys'
 
-const CHILD_PROFILES_STORAGE_KEY = 'daycare.childProfiles'
-const ATTENDANCE_STORAGE_KEY = 'daycare.attendanceRecords'
+function createAttendanceId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+
+  return `attendance-${Date.now()}-${Math.random().toString(36).slice(2)}`
+}
+
+function formatEventType(type) {
+  return type === 'dropOff' ? 'Drop-off' : 'Pick-up'
+}
+
+function findActiveRecordIndex(records, childId) {
+  for (let i = records.length - 1; i >= 0; i -= 1) {
+    if (records[i].childId === childId && (!records[i].pickUp || !records[i].pickUp.confirmedAt)) {
+      return i
+    }
+  }
+
+  return -1
+}
 
 function formatTimestamp(timestamp) {
   if (!timestamp) {
@@ -75,6 +95,16 @@ function Attendance() {
     [attendanceRecords],
   )
 
+  const sortedAttendanceRecords = useMemo(
+    () =>
+      [...attendanceRecords].sort((a, b) => {
+        const bTime = Date.parse(b.dropOff?.initiatedAt ?? '') || 0
+        const aTime = Date.parse(a.dropOff?.initiatedAt ?? '') || 0
+        return bTime - aTime
+      }),
+    [attendanceRecords],
+  )
+
   function initiateParentEvent(type) {
     if (!selectedChildId || !childById.has(selectedChildId)) {
       setFeedback('Please choose a child that already exists in the system.')
@@ -86,7 +116,8 @@ function Attendance() {
 
     setAttendanceRecords((prev) => {
       const next = [...prev]
-      const activeRecord = [...next].reverse().find((record) => record.childId === selectedChildId && !record.pickUp)
+      const activeIndex = findActiveRecordIndex(next, selectedChildId)
+      const activeRecord = activeIndex >= 0 ? next[activeIndex] : null
 
       if (type === 'dropOff') {
         if (activeRecord) {
@@ -98,7 +129,7 @@ function Attendance() {
         return [
           ...next,
           {
-            id: crypto.randomUUID(),
+            id: createAttendanceId(),
             childId: child.id,
             childName: `${child.firstName} ${child.lastName}`,
             dropOff: {
@@ -122,7 +153,6 @@ function Attendance() {
         return prev
       }
 
-      const activeIndex = next.findIndex((record) => record.id === activeRecord.id)
       next[activeIndex] = {
         ...activeRecord,
         pickUp: {
@@ -182,7 +212,9 @@ function Attendance() {
 
         <section className="attendance-card" aria-label="Parent actions">
           <h2>Parent side</h2>
-          <p className="attendance-help">Child must already exist in the system before check-in or check-out.</p>
+          <p className="attendance-help">
+            Child must already exist in the system. Add a child profile first if needed.
+          </p>
           {children.length === 0 ? (
             <p className="attendance-warning">No child profiles found. Add one from the Child Profile page first.</p>
           ) : (
@@ -224,12 +256,12 @@ function Attendance() {
                   <div>
                     <strong>{event.childName}</strong>
                     <p>
-                      {event.type === 'dropOff' ? 'Drop-off' : 'Pick-up'} initiated by {event.details.initiatedBy} at{' '}
+                      {formatEventType(event.type)} initiated by {event.details.initiatedBy} at{' '}
                       {formatTimestamp(event.details.initiatedAt)}
                     </p>
                   </div>
                   <button type="button" className="btn-primary" onClick={() => confirmByProvider(event.recordId, event.type)}>
-                    Confirm {event.type === 'dropOff' ? 'drop-off' : 'pick-up'}
+                    Confirm {formatEventType(event.type).toLowerCase()}
                   </button>
                 </li>
               ))}
@@ -243,28 +275,26 @@ function Attendance() {
             <p className="attendance-help">No attendance events recorded yet.</p>
           ) : (
             <ul className="history-list">
-              {[...attendanceRecords]
-                .sort((a, b) => new Date(b.dropOff.initiatedAt) - new Date(a.dropOff.initiatedAt))
-                .map((record) => (
-                  <li key={record.id} className="history-item">
-                    <strong>{record.childName}</strong>
-                    <p>
-                      Drop-off time: {formatTimestamp(record.dropOff.initiatedAt)} · Initiated by {record.dropOff.initiatedBy}
-                    </p>
-                    <p>
-                      Drop-off confirmation: {record.dropOff.confirmedBy || 'Pending'} ·{' '}
-                      {formatTimestamp(record.dropOff.confirmedAt)}
-                    </p>
-                    <p>
-                      Pickup time: {formatTimestamp(record.pickUp?.initiatedAt)} · Initiated by{' '}
-                      {record.pickUp?.initiatedBy || '—'}
-                    </p>
-                    <p>
-                      Pickup confirmation: {record.pickUp?.confirmedBy || 'Pending'} ·{' '}
-                      {formatTimestamp(record.pickUp?.confirmedAt)}
-                    </p>
-                  </li>
-                ))}
+              {sortedAttendanceRecords.map((record) => (
+                <li key={record.id} className="history-item">
+                  <strong>{record.childName}</strong>
+                  <p>
+                    Drop-off time: {formatTimestamp(record.dropOff?.initiatedAt)} · Initiated by {record.dropOff?.initiatedBy || '—'}
+                  </p>
+                  <p>
+                    Drop-off confirmation: {record.dropOff?.confirmedBy || 'Pending'} ·{' '}
+                    {formatTimestamp(record.dropOff?.confirmedAt)}
+                  </p>
+                  <p>
+                    Pickup time: {formatTimestamp(record.pickUp?.initiatedAt)} · Initiated by{' '}
+                    {record.pickUp?.initiatedBy || '—'}
+                  </p>
+                  <p>
+                    Pickup confirmation: {record.pickUp?.confirmedBy || 'Pending'} ·{' '}
+                    {formatTimestamp(record.pickUp?.confirmedAt)}
+                  </p>
+                </li>
+              ))}
             </ul>
           )}
         </section>
