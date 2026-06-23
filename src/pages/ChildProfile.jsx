@@ -25,7 +25,7 @@ function ChildProfile() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    setSavedProfiles((prev) => [...prev, { ...form, id: Date.now() }])
+    setSavedProfiles((prev) => [...prev, { ...form, id: crypto.randomUUID() }])
     setForm(INITIAL_FORM)
     setSubmitted(true)
   }
@@ -105,6 +105,7 @@ function ChildProfile() {
                   className="field-input field-input--date"
                   value={form.dateOfBirth}
                   onChange={handleChange}
+                  max={new Date().toISOString().split('T')[0]}
                   required
                 />
               </div>
@@ -202,6 +203,8 @@ function ChildProfile() {
                   value={form.emergencyContactPhone}
                   onChange={handleChange}
                   placeholder="e.g. (555) 867-5309"
+                  pattern="[\+]?[\d\s\-\(\)]{7,20}"
+                  title="Enter a valid phone number"
                   required
                   autoComplete="tel"
                 />
