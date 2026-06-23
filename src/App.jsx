@@ -1,121 +1,92 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 
+const features = [
+  {
+    eyebrow: 'Operations',
+    title: 'Child attendance tracking',
+    description:
+      'Record check-ins and check-outs in seconds with clear status updates for every classroom.',
+  },
+  {
+    eyebrow: 'Communication',
+    title: 'Parent communication',
+    description:
+      'Share announcements, reminders, and quick updates so families stay informed throughout the day.',
+  },
+  {
+    eyebrow: 'Reporting',
+    title: 'Daily reports',
+    description:
+      'Deliver a polished summary of meals, naps, activities, and notes before pickup time.',
+  },
+]
+
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+    <main className="page">
+      <section className="hero-section">
+        <div className="hero-copy">
+          <p className="eyebrow">Trusted childcare management</p>
+          <h1>Daycare</h1>
+          <p className="hero-text">
+            A professional, family-friendly platform that helps centers stay organized,
+            keep parents connected, and deliver confident care every day.
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
+          <div className="hero-actions">
+            <a className="primary-action" href="#features">
+              Explore features
+            </a>
+            <a className="secondary-action" href="#trust">
+              Why families trust us
+            </a>
+          </div>
+          <ul className="hero-highlights" aria-label="Key service benefits">
+            <li>Real-time classroom visibility</li>
+            <li>Simple family communication</li>
+            <li>Consistent daily reporting</li>
           </ul>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
+
+        <aside className="hero-panel" aria-label="Daycare overview">
+          <div className="panel-card spotlight">
+            <span className="panel-label">Today&apos;s overview</span>
+            <strong>42 children safely checked in</strong>
+            <p>Attendance is current across every room with instant status visibility.</p>
+          </div>
+          <div className="panel-grid">
+            <div className="panel-card">
+              <span className="metric">98%</span>
+              <p>Parent message open rate for important classroom updates.</p>
+            </div>
+            <div className="panel-card">
+              <span className="metric">3 min</span>
+              <p>Average time for staff to complete and send a daily report.</p>
+            </div>
+          </div>
+        </aside>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <section className="trust-section" id="trust">
+        <div>
+          <p className="section-label">Built for confidence</p>
+          <h2>Professional tools for the routines families depend on</h2>
+        </div>
+        <p className="section-text">
+          Daycare supports dependable operations with a calm, trustworthy experience for
+          administrators, educators, and parents.
+        </p>
+      </section>
+
+      <section className="feature-section" id="features">
+        {features.map((feature) => (
+          <article className="feature-card" key={feature.title}>
+            <p className="feature-eyebrow">{feature.eyebrow}</p>
+            <h3>{feature.title}</h3>
+            <p>{feature.description}</p>
+          </article>
+        ))}
+      </section>
+    </main>
   )
 }
 
