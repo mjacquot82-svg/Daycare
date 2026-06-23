@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './ChildProfile.css'
+import { CHILD_PROFILES_STORAGE_KEY } from '../constants/storageKeys'
 
 const INITIAL_FORM = {
   firstName: '',
@@ -17,6 +18,29 @@ function ChildProfile() {
   const [form, setForm] = useState(INITIAL_FORM)
   const [savedProfiles, setSavedProfiles] = useState([])
   const [submitted, setSubmitted] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
+
+  useEffect(() => {
+    const saved = localStorage.getItem(CHILD_PROFILES_STORAGE_KEY)
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved)
+        if (Array.isArray(parsed)) {
+          setSavedProfiles(parsed)
+        }
+      } catch {
+        localStorage.removeItem(CHILD_PROFILES_STORAGE_KEY)
+      }
+    }
+    setIsHydrated(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return
+    }
+    localStorage.setItem(CHILD_PROFILES_STORAGE_KEY, JSON.stringify(savedProfiles))
+  }, [isHydrated, savedProfiles])
 
   function handleChange(e) {
     const { name, value } = e.target
